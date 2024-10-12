@@ -1,0 +1,28 @@
+.header_container {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    color: #000000d9;
+    font-family: Inter;
+    font-size: 18px;
+    padding: 0 22px;
+    margin-bottom: 26px;
+}
+.header_buttons {
+    display: flex;
+    gap: 20px;
+}
+.header_button {
+    width: 109px;
+    height: 51px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+}
+.sign_up_button {
+    color: #52c41a;
+    border: 1px solid #52c41a;
+    border-radius: 5px;
+}

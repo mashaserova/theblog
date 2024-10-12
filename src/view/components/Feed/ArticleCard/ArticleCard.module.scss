@@ -1,0 +1,69 @@
+.article_card {
+    max-width: 938px;
+    min-width: 400px;
+    min-height: 140px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 20px 15px 24px 15px;
+    box-shadow: 0 4px 12px 0 #00000026;
+}
+.article_content {
+    display: flex;
+    flex-direction: column;
+}
+.article_header {
+    display: flex;
+    margin-bottom: 10px;
+}
+.article_title {
+    margin: 0;
+    font-size: 20px;
+    color: #1890ff;
+    font-weight: 400;
+    margin: 0 13px 0 0;
+}
+.article_like {
+    margin: 0 3px 0 0;
+}
+.like_count {
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 6px;
+}
+.article_tag {
+    border: 1px solid #00000080;
+    border-radius: 2px;
+    padding: 0 4px;
+    margin-right: 5px;
+    color: #00000080;
+}
+.article_description {
+    font-size: 12px;
+    font-weight: 400;
+    color: #000000bf;
+}
+.article_body {
+
+}
+.article_info {
+    display: flex;
+    gap: 12px;
+}
+.author_title {
+    font-size: 18px;
+    font-weight: 400;
+    color: #000000d9;
+    margin: 0;
+}
+.article_date {
+    font-weight: 400;
+    font-size: 12px;
+    color: #00000080;
+}
+.author_image {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+}

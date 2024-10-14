@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { SignUp } from './view/components/Header/SignUp';
 import { SignIn } from './view/components/Header/SignIn';
 import { Article } from './view/components/Feed/article/Article';
+import { AuthorizedFeed } from './view/components/Feed/AuthorizedFeed';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
     {
         path: '/article/:id',
         element: <Article />,
+    },
+    {
+        path: '/authorized',
+        element: <AuthorizedFeed />,
     },
 ]);
 

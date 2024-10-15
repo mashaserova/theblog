@@ -7,8 +7,9 @@ import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { SignUp } from './view/components/Header/SignUp';
 import { SignIn } from './view/components/Header/SignIn';
-import { Article } from './view/components/Feed/article/Article';
-import { AuthorizedFeed } from './view/components/Feed/AuthorizedFeed';
+import { Article } from './view/components/Feed/Article/Article';
+import { NewArticle } from './view/components/Feed/NewArticle/NewArticle';
+import { Profile } from './view/components/Feed/Profile/Profile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
@@ -30,8 +31,12 @@ const router = createBrowserRouter([
         element: <Article />,
     },
     {
-        path: '/authorized',
-        element: <AuthorizedFeed />,
+        path: '/new-article',
+        element: <NewArticle />,
+    },
+    {
+        path: '/profile',
+        element: <Profile />,
     },
 ]);
 

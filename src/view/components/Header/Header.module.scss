@@ -13,6 +13,7 @@
 .header_buttons {
     display: flex;
     gap: 20px;
+    align-items: center;
 }
 .header_button {
     width: 109px;
@@ -25,4 +26,30 @@
     color: #52c41a;
     border: 1px solid #52c41a;
     border-radius: 5px;
+}
+.create_article_button {
+    font-size: 14px;
+    color: #52C41A;
+    border: 1px solid #52C41A;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 112px;
+    height: 31px;
+    cursor: pointer;
+}
+.profile_button {
+    color: #000000D9;
+    font-size: 18px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+}
+.log_out_button {
+    width: 109px;
+    height: 51px;
+    color: #000000BF;
+    border: 1px solid #000000BF;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff;
 }

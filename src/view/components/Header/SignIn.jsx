@@ -4,6 +4,8 @@ import { HeaderLayout } from './HeaderLayout';
 import styles from './SignIn.module.scss';
 import { useForm } from 'react-hook-form';
 import { useLoginUserMutation } from '../../../store/loginSlice';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../../store/authSlice';
 
 export const SignIn = () => {
     const {
@@ -12,21 +14,19 @@ export const SignIn = () => {
         formState: { errors, isSubmitting },
     } = useForm();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [loginUser, { isError, error }] = useLoginUserMutation();
     const onSubmit = async (data) => {
         try {
-            const userPayload = {
-                user: {
-                    email: data.email,
-                    password: data.password,
-                },
-            };
-            console.log('Data being sent:', userPayload);
-            const result = await loginUser(userPayload).unwrap();
-            console.log('Login successful: ', result);
-            navigate('/authorized');
-        } catch (error) {
-            console.log('Login failed', error);
+            const result = await loginUser({
+                email: data.email,
+                password: data.password,
+            }).unwrap();
+            console.log(result);
+            dispatch(loginSuccess({ token: result.token, user: result.user }));
+            navigate('/');
+        } catch (err) {
+            console.error('Ошибка входа:', err);
         }
     };
     return (

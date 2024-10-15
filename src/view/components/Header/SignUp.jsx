@@ -37,11 +37,10 @@ export const SignUp = () => {
                 ...userData,
                 password: passwordBase64,
             }).unwrap();
-            console.log('Registration successful: ', result);
             dispatch(loginSuccess({ token: result.token, user: result.user }));
             navigate('/authorized');
         } catch (error) {
-            console.log('Registration failed', error);
+            console.error('Registration failed', error);
         }
     };
     const password = watch('password');

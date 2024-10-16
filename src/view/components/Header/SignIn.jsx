@@ -22,8 +22,10 @@ export const SignIn = () => {
                 email: data.email,
                 password: data.password,
             }).unwrap();
-            console.log(result);
-            dispatch(loginSuccess({ token: result.token, user: result.user }));
+            dispatch(
+                loginSuccess({ token: result.user.token, user: result.user })
+            );
+            localStorage.setItem('token', result.user.token);
             navigate('/');
         } catch (err) {
             console.error('Ошибка входа:', err);

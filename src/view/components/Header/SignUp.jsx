@@ -37,8 +37,11 @@ export const SignUp = () => {
                 ...userData,
                 password: passwordBase64,
             }).unwrap();
-            dispatch(loginSuccess({ token: result.token, user: result.user }));
-            navigate('/authorized');
+            dispatch(
+                loginSuccess({ token: result.user.token, user: result.user })
+            );
+            localStorage.setItem('token', result.user.token);
+            navigate('/');
         } catch (error) {
             console.error('Registration failed', error);
         }

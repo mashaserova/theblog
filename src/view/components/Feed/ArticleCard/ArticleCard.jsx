@@ -2,43 +2,47 @@ import React from 'react';
 import styles from './ArticleCard.module.scss';
 import like from '../../../../assets/images/like.svg';
 import { format } from 'date-fns';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useDeleteArticleMutation } from '../../../../store/deleteArticleSlice';
+import { useGetCurrentUserQuery } from '../../../../store/currentUserSlice';
 
-//DELETE BUTTON через запрос на сервер
 export const ArticleCard = ({ article, fullContent }) => {
     const formattedDate = (dateStr) => {
         const date = new Date(dateStr);
         return format(date, 'LLLL dd, yyyy');
     };
     const [deleteArticle] = useDeleteArticleMutation();
-    const onDelete = async (slug) => {
+    const onDelete = async () => {
         try {
-            const result = await deleteArticle(slug).unwrap();
+            console.log(article.slug);
+            const result = await deleteArticle(article.slug).unwrap();
             console.log(result);
         } catch (err) {
             console.error('Ошибка входа:', err);
         }
     };
-    const currentUser = useSelector((state) => state.auth.user);
-    console.log('курент юзер', currentUser);
-    const isAuthor =
-        currentUser && currentUser.username === article.author.username;
-    console.log(isAuthor);
+    const { data } = useGetCurrentUserQuery();
+    const isAuthor = data?.user?.username === article.author.username;
     return (
         <div className={styles.article_card}>
             <div className={styles.article_content}>
                 <div className={styles.article_header}>
-                    <h1 className={styles.article_title}>{article.title}</h1>
+                    <Link to={`/article/${article.slug}`} state={{ article }}>
+                        <h1 className={styles.article_title}>
+                            {article.title}
+                        </h1>
+                    </Link>
                     <img className={styles.article_like} src={like} />
                     <span className={styles.like_count}>
                         {article.favoritesCount}
                     </span>
                 </div>
                 <div className={styles.article_tags}>
-                    {article.tagList.map((tag) => (
-                        <span key={tag} className={styles.article_tag}>
+                    {article.tagList.map((tag, index) => (
+                        <span
+                            key={`${index}-${tag}`}
+                            className={styles.article_tag}
+                        >
                             {tag}
                         </span>
                     ))}
@@ -63,10 +67,16 @@ export const ArticleCard = ({ article, fullContent }) => {
                     className={styles.author_image}
                     src={article.author.image}
                 />
-                {isAuthor && (
-                    <div className={styles.article.buttons}>
-                        <Link to={`/article/${article.slug}/edit`}>Edit</Link>
-                        <button onClick={() => onDelete(article.slug)}>
+                {data && isAuthor && fullContent && (
+                    <div className={styles.article_buttons}>
+                        {console.log(isAuthor)}
+                        <Link
+                            to={`/article/${article.slug}/edit`}
+                            state={{ article }}
+                        >
+                            Edit
+                        </Link>
+                        <button type="button" onClick={() => onDelete()}>
                             Delete
                         </button>
                     </div>

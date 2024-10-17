@@ -26,6 +26,7 @@ export const SignIn = () => {
                 loginSuccess({ token: result.user.token, user: result.user })
             );
             localStorage.setItem('token', result.user.token);
+            localStorage.setItem('username', result.user.username);
             navigate('/');
         } catch (err) {
             console.error('Ошибка входа:', err);

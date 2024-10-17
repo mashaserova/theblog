@@ -5,6 +5,8 @@ import authReducer from './authSlice';
 import { loginApi } from './loginSlice';
 import { currentUserApi } from './currentUserSlice';
 import { newArticleApi } from './newArticleSlice';
+import { deleteArticleApi } from './deleteArticleSlice';
+import { editArticleApi } from './editArticleSlice';
 
 const store = configureStore({
     reducer: {
@@ -13,6 +15,8 @@ const store = configureStore({
         [loginApi.reducerPath]: loginApi.reducer,
         [currentUserApi.reducerPath]: currentUserApi.reducer,
         [newArticleApi.reducerPath]: newArticleApi.reducer,
+        [deleteArticleApi.reducerPath]: deleteArticleApi.reducer,
+        [editArticleApi.reducerPath]: editArticleApi.reducer,
         auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
@@ -21,7 +25,9 @@ const store = configureStore({
             registerApi.middleware,
             loginApi.middleware,
             currentUserApi.middleware,
-            newArticleApi.middleware
+            newArticleApi.middleware,
+            deleteArticleApi.middleware,
+            editArticleApi.middleware
         ),
 });
 

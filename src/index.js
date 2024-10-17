@@ -10,6 +10,7 @@ import { SignIn } from './view/components/Header/SignIn';
 import { Article } from './view/components/Feed/Article/Article';
 import { NewArticle } from './view/components/Feed/NewArticle/NewArticle';
 import { Profile } from './view/components/Feed/Profile/Profile';
+import { Edit } from './view/components/Feed/Edit/Edit';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
     {
         path: '/profile',
         element: <Profile />,
+    },
+    {
+        path: '/article/:id/edit',
+        element: <Edit />,
     },
 ]);
 

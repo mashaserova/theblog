@@ -2,11 +2,14 @@ import React from 'react';
 import styles from './ArticleCard.module.scss';
 import like from '../../../../assets/images/like.svg';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
-import { useDeleteArticleMutation } from '../../../../store/deleteArticleSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDeleteArticleMutation } from '../../../../store/articlesSlice';
 import { useGetCurrentUserQuery } from '../../../../store/currentUserSlice';
+import { Popconfirm, message } from 'antd';
 
 export const ArticleCard = ({ article, fullContent }) => {
+    const navigate = useNavigate();
+    const token = localStorage.getItem('token');
     const formattedDate = (dateStr) => {
         const date = new Date(dateStr);
         return format(date, 'LLLL dd, yyyy');
@@ -14,14 +17,14 @@ export const ArticleCard = ({ article, fullContent }) => {
     const [deleteArticle] = useDeleteArticleMutation();
     const onDelete = async () => {
         try {
-            console.log(article.slug);
-            const result = await deleteArticle(article.slug).unwrap();
-            console.log(result);
+            await deleteArticle(article.slug).unwrap();
+            message.success('Article is deleted successfully!');
+            navigate('/');
         } catch (err) {
-            console.error('Ошибка входа:', err);
+            message.error('Error while deleting article');
         }
     };
-    const { data } = useGetCurrentUserQuery();
+    const { data } = useGetCurrentUserQuery(undefined, { skip: !token });
     const isAuthor = data?.user?.username === article.author.username;
     return (
         <div className={styles.article_card}>
@@ -55,30 +58,42 @@ export const ArticleCard = ({ article, fullContent }) => {
                 )}
             </div>
             <div className={styles.article_info}>
-                <div>
-                    <h2 className={styles.author_title}>
-                        {article.author.username}
-                    </h2>
-                    <span className={styles.article_date}>
-                        {formattedDate(article.updatedAt)}
-                    </span>
+                <div className={styles.author_block}>
+                    <div>
+                        <h2 className={styles.author_title}>
+                            {article.author.username}
+                        </h2>
+                        <span className={styles.article_date}>
+                            {formattedDate(article.updatedAt)}
+                        </span>
+                    </div>
+                    <img
+                        className={styles.author_image}
+                        src={article.author.image}
+                    />
                 </div>
-                <img
-                    className={styles.author_image}
-                    src={article.author.image}
-                />
                 {data && isAuthor && fullContent && (
                     <div className={styles.article_buttons}>
-                        {console.log(isAuthor)}
+                        <Popconfirm
+                            title="Are you sure you really want to delete this article?"
+                            onConfirm={onDelete}
+                            okText="Delete"
+                            cancelText="Cancel"
+                        >
+                            <button
+                                type="button"
+                                className={styles.delete_button}
+                            >
+                                Delete
+                            </button>
+                        </Popconfirm>
                         <Link
                             to={`/article/${article.slug}/edit`}
                             state={{ article }}
+                            className={styles.edit_button}
                         >
                             Edit
                         </Link>
-                        <button type="button" onClick={() => onDelete()}>
-                            Delete
-                        </button>
                     </div>
                 )}
             </div>

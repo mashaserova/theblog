@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { HeaderLayout } from '../../Header/HeaderLayout';
 import styles from './NewArticle.module.scss';
 import { useForm } from 'react-hook-form';
-import { useCreateNewArticleMutation } from '../../../../store/newArticleSlice';
+import { useCreateNewArticleMutation } from '../../../../store/articlesSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const NewArticle = () => {
     const {
@@ -11,23 +12,18 @@ export const NewArticle = () => {
         formState: { errors, isSubmitting },
         setValue,
     } = useForm();
+    const navigate = useNavigate();
     const [tags, setTags] = useState([]);
     const [createNewArticle] = useCreateNewArticleMutation();
     const onSubmit = async (data) => {
         try {
-            console.log('AAAA', {
-                title: data.title,
-                description: data.description,
-                body: data.body,
-                tags: tags,
-            });
-            const result = await createNewArticle({
+            await createNewArticle({
                 title: data.title,
                 description: data.description,
                 body: data.body,
                 tagList: tags,
-            });
-            console.log(result);
+            }).unwrap();
+            navigate('/');
         } catch (error) {
             console.log('ошибка', error);
         }

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-export const newArticleApi = createApi({
-    reducerPath: 'newArticleApi',
+export const editProfileApi = createApi({
+    reducerPath: 'editProfileApi',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://blog-platform.kata.academy/api',
         prepareHeaders: (headers, { getState }) => {
@@ -13,13 +13,13 @@ export const newArticleApi = createApi({
         },
     }),
     endpoints: (builder) => ({
-        createNewArticle: builder.mutation({
-            query: (article) => ({
-                url: '/articles',
-                method: 'POST',
-                body: { article },
+        editProfile: builder.mutation({
+            query: (profileData) => ({
+                url: `/user`,
+                method: 'PUT',
+                body: profileData,
             }),
         }),
     }),
 });
-export const { useCreateNewArticleMutation } = newArticleApi;
+export const { useEditProfileMutation } = editProfileApi;

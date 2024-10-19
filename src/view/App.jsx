@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useGetArticlesQuery } from '../store/apiSlice';
+import { useGetArticlesQuery } from '../store/articlesSlice';
 import { Pagination } from 'antd';
 import styles from './App.module.scss';
 import { HeaderLayout } from './components/Header/HeaderLayout';
@@ -24,6 +24,9 @@ const App = () => {
                 Error: {error.status} - {error.data.message}
             </div>
         );
+    }
+    if (!data) {
+        return <div>Loading data...</div>; // Или другой подходящий индикатор загрузки
     }
     return (
         <>

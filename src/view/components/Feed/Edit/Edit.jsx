@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { HeaderLayout } from '../../Header/HeaderLayout';
 import { useForm } from 'react-hook-form';
 import styles from './Edit.module.scss';
-import { useLocation } from 'react-router-dom';
-import { useEditArticleMutation } from '../../../../store/editArticleSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEditArticleMutation } from '../../../../store/articlesSlice';
 
 export const Edit = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const article = location.state?.article;
     const {
@@ -38,11 +39,11 @@ export const Edit = () => {
                     tagList: tags,
                 },
             };
-            const result = await editArticle({
+            await editArticle({
                 slug: article.slug,
                 articleData,
             }).unwrap();
-            console.log('результ', result);
+            navigate('/');
         } catch (error) {
             console.log('ошибка', error);
         }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Header.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -9,12 +9,20 @@ export const Header = () => {
     const token = localStorage.getItem('token');
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { data, isLoading, refetch } = useGetCurrentUserQuery(undefined, {
+        skip: !token,
+    });
     const handleLogout = () => {
         dispatch(logout());
         localStorage.removeItem('token');
+        localStorage.removeItem('username');
         navigate('./');
     };
-    const { data, isLoading } = useGetCurrentUserQuery();
+    useEffect(() => {
+        if (token) {
+            refetch();
+        }
+    }, [token, refetch]);
     return (
         <header className={styles.header_container}>
             <Link to={'/'}>

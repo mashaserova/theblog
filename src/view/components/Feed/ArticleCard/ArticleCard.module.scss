@@ -46,6 +46,11 @@
 }
 .article_info {
     display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.author_block {
+    display: flex;
     gap: 12px;
 }
 .author_title {
@@ -63,4 +68,29 @@
     width: 46px;
     height: 46px;
     border-radius: 50%;
+}
+.article_buttons {
+    align-items: right;
+}
+.delete_button {
+    color: #f5222d;
+    border: 1px solid #f5222d;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 6px 17px;
+    margin-right: 12px;
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+.edit_button {
+    color: #52c41a;
+    border: 1px solid #52c41a;
+    border-radius: 5px;
+    padding: 5px 17px;
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }

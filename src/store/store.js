@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { articlesApi } from './apiSlice';
+import { articlesApi } from './articlesSlice';
 import { registerApi } from './registerSlice';
 import authReducer from './authSlice';
 import { loginApi } from './loginSlice';
 import { currentUserApi } from './currentUserSlice';
-import { newArticleApi } from './newArticleSlice';
-import { deleteArticleApi } from './deleteArticleSlice';
-import { editArticleApi } from './editArticleSlice';
+import { editProfileApi } from './editProfileSlice';
 
 const store = configureStore({
     reducer: {
@@ -14,9 +12,7 @@ const store = configureStore({
         [registerApi.reducerPath]: registerApi.reducer,
         [loginApi.reducerPath]: loginApi.reducer,
         [currentUserApi.reducerPath]: currentUserApi.reducer,
-        [newArticleApi.reducerPath]: newArticleApi.reducer,
-        [deleteArticleApi.reducerPath]: deleteArticleApi.reducer,
-        [editArticleApi.reducerPath]: editArticleApi.reducer,
+        [editProfileApi.reducerPath]: editProfileApi.reducer,
         auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
@@ -25,9 +21,7 @@ const store = configureStore({
             registerApi.middleware,
             loginApi.middleware,
             currentUserApi.middleware,
-            newArticleApi.middleware,
-            deleteArticleApi.middleware,
-            editArticleApi.middleware
+            editProfileApi.middleware
         ),
 });
 

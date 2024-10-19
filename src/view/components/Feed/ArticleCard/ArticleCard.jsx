@@ -1,20 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ArticleCard.module.scss';
 import like from '../../../../assets/images/like.svg';
+import redLike from '../../../../assets/images/redLike.svg';
 import { format } from 'date-fns';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDeleteArticleMutation } from '../../../../store/articlesSlice';
 import { useGetCurrentUserQuery } from '../../../../store/currentUserSlice';
+import {
+    useDislikeArticleMutation,
+    useLikeArticleMutation,
+} from '../../../../store/likeSlice';
 import { Popconfirm, message } from 'antd';
 
 export const ArticleCard = ({ article, fullContent }) => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const [likes, setLikes] = useState(article.favoritesCount);
+    const [isLiked, setIsLiked] = useState(article.favorited);
+    const [deleteArticle] = useDeleteArticleMutation();
+    const [likeArticle] = useLikeArticleMutation();
+    const [dislikeArticle] = useDislikeArticleMutation();
     const formattedDate = (dateStr) => {
         const date = new Date(dateStr);
         return format(date, 'LLLL dd, yyyy');
     };
-    const [deleteArticle] = useDeleteArticleMutation();
     const onDelete = async () => {
         try {
             await deleteArticle(article.slug).unwrap();
@@ -22,6 +31,33 @@ export const ArticleCard = ({ article, fullContent }) => {
             navigate('/');
         } catch (err) {
             message.error('Error while deleting article');
+        }
+    };
+    const handleLikeArticle = async () => {
+        if (!token) {
+            message.error('You need to be logged in to like articles.');
+            return;
+        }
+        if (!isLiked) {
+            setLikes(likes + 1);
+            setIsLiked(true);
+            try {
+                await likeArticle(article.slug).unwrap();
+            } catch (error) {
+                setLikes(likes - 1);
+                setIsLiked(false);
+                message.error('Error while liking the article: ', error);
+            }
+        } else {
+            setLikes(likes - 1);
+            setIsLiked(false);
+            try {
+                await dislikeArticle(article.slug).unwrap();
+            } catch (error) {
+                setLikes(likes + 1);
+                setIsLiked(true);
+                message.error('Error while liking the article: ', error);
+            }
         }
     };
     const { data } = useGetCurrentUserQuery(undefined, { skip: !token });
@@ -35,10 +71,12 @@ export const ArticleCard = ({ article, fullContent }) => {
                             {article.title}
                         </h1>
                     </Link>
-                    <img className={styles.article_like} src={like} />
-                    <span className={styles.like_count}>
-                        {article.favoritesCount}
-                    </span>
+                    <img
+                        onClick={handleLikeArticle}
+                        className={styles.article_like}
+                        src={isLiked ? redLike : like}
+                    />
+                    <span className={styles.like_count}>{likes}</span>
                 </div>
                 <div className={styles.article_tags}>
                     {article.tagList.map((tag, index) => (

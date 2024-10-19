@@ -5,6 +5,7 @@ import authReducer from './authSlice';
 import { loginApi } from './loginSlice';
 import { currentUserApi } from './currentUserSlice';
 import { editProfileApi } from './editProfileSlice';
+import { likeArticleApi } from './likeSlice';
 
 const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
         [loginApi.reducerPath]: loginApi.reducer,
         [currentUserApi.reducerPath]: currentUserApi.reducer,
         [editProfileApi.reducerPath]: editProfileApi.reducer,
+        [likeArticleApi.reducerPath]: likeArticleApi.reducer,
         auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
@@ -21,7 +23,8 @@ const store = configureStore({
             registerApi.middleware,
             loginApi.middleware,
             currentUserApi.middleware,
-            editProfileApi.middleware
+            editProfileApi.middleware,
+            likeArticleApi.middleware
         ),
 });
 

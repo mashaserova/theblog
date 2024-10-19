@@ -25,12 +25,16 @@
     margin: 0 13px 0 0;
 }
 .article_like {
-    margin: 0 3px 0 0;
+    width: 20px;
+    height: 20px;
+    margin: 1px 3px 0 0;
+    cursor: pointer;
 }
 .like_count {
     font-size: 12px;
     font-weight: 400;
     margin-top: 6px;
+    cursor: pointer;
 }
 .article_tag {
     border: 1px solid #00000080;

@@ -17,7 +17,7 @@ export const articlesApi = createApi({
     endpoints: (builder) => ({
         getArticles: builder.query({
             query: ({ limit = 5, offset = 0 }) =>
-                `articlsdsdsdses?limit=${limit}&offset=${offset}`,
+                `articles?limit=${limit}&offset=${offset}`,
             providesTags: ['Articles'],
         }),
         createNewArticle: builder.mutation({

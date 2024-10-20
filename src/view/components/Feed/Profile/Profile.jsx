@@ -6,6 +6,7 @@ import { useEditProfileMutation } from '../../../../store/editProfileSlice';
 import { useGetCurrentUserQuery } from '../../../../store/currentUserSlice';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useGetArticlesQuery } from '../../../../store/articlesSlice';
 export const Profile = () => {
     const {
         register,
@@ -17,6 +18,10 @@ export const Profile = () => {
     const navigate = useNavigate();
     const [editProfile] = useEditProfileMutation();
     const { data: user, isLoading } = useGetCurrentUserQuery();
+    const { refetch: refetchArticles } = useGetArticlesQuery({
+        limit: 5,
+        offset: 0,
+    });
     useEffect(() => {
         if (user && !isLoading) {
             reset({
@@ -56,6 +61,7 @@ export const Profile = () => {
         } finally {
             if (!hasError) {
                 message.success('Profile edited successfully');
+                refetchArticles();
                 navigate('/');
             }
         }

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useRegisterUserMutation } from '../../../store/registerSlice';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../../store/authSlice';
+import { message } from 'antd';
 
 export const SignUp = () => {
     const {
@@ -16,7 +17,7 @@ export const SignUp = () => {
     } = useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [registerUser, { isError, error }] = useRegisterUserMutation();
+    const [registerUser, { isError }] = useRegisterUserMutation();
     const onSubmit = async (data) => {
         try {
             const { password, repeatPassword, agreeToTerms, ...userData } =
@@ -30,8 +31,8 @@ export const SignUp = () => {
                 console.error('Must agree to terms');
                 return;
             }
-            const passwordBuffer = new TextEncoder().encode(password); // Создаем буфер
-            const passwordBase64 = btoa(String.fromCharCode(...passwordBuffer)); // Кодируем в base64
+            const passwordBuffer = new TextEncoder().encode(password);
+            const passwordBase64 = btoa(String.fromCharCode(...passwordBuffer));
 
             const result = await registerUser({
                 ...userData,
@@ -40,10 +41,11 @@ export const SignUp = () => {
             dispatch(
                 loginSuccess({ token: result.user.token, user: result.user })
             );
+            message.success('Ragistration is successed!');
             localStorage.setItem('token', result.user.token);
             navigate('/');
         } catch (error) {
-            console.error('Registration failed', error);
+            message.error('Registration is failed, please, try again.');
         }
     };
     const password = watch('password');
@@ -72,12 +74,14 @@ export const SignUp = () => {
                                         return true;
                                     },
                                 })}
-                                className={styles.sign_up_input}
+                                className={`${styles.sign_up_input} ${(isError || errors.username) && styles.error_input}`}
                             />
+                            {errors.username && (
+                                <div className={styles.error_message}>
+                                    {errors.username.message}
+                                </div>
+                            )}
                         </label>
-                        {errors.username && (
-                            <div>{errors.username.message}</div>
-                        )}
                         <label className={styles.sign_up_label}>
                             Email address
                             <input
@@ -90,10 +94,14 @@ export const SignUp = () => {
                                         message: 'Invalid email address',
                                     },
                                 })}
-                                className={styles.sign_up_input}
+                                className={`${styles.sign_up_input} ${(isError || errors.email) && styles.error_input}`}
                             ></input>
+                            {errors.email && (
+                                <div className={styles.error_message}>
+                                    {errors.email.message}
+                                </div>
+                            )}
                         </label>
-                        {errors.email && <div>{errors.email.message}</div>}
                         <label className={styles.sign_up_label}>
                             Password
                             <input
@@ -111,12 +119,14 @@ export const SignUp = () => {
                                         return true;
                                     },
                                 })}
-                                className={styles.sign_up_input}
+                                className={`${styles.sign_up_input} ${(isError || errors.password) && styles.error_input}`}
                             ></input>
+                            {errors.password && (
+                                <div className={styles.error_message}>
+                                    {errors.password.message}
+                                </div>
+                            )}
                         </label>
-                        {errors.password && (
-                            <div>{errors.password.message}</div>
-                        )}
                         <label className={styles.sign_up_label}>
                             Repeat Password
                             <input
@@ -131,25 +141,29 @@ export const SignUp = () => {
                                         return true;
                                     },
                                 })}
-                                className={styles.sign_up_input}
+                                className={`${styles.sign_up_input} ${(isError || errors.repeatPassword) && styles.error_input}`}
                             ></input>
+                            {errors.repeatPassword && (
+                                <div className={styles.error_message}>
+                                    {errors.repeatPassword.message}
+                                </div>
+                            )}
                         </label>
-                        {errors.repeatPassword && (
-                            <div>{errors.repeatPassword.message}</div>
-                        )}
                         <label className={styles.sign_up_label}>
                             <input
                                 type="checkbox"
                                 {...register('agreeToTerms', {
                                     required: 'You must agree to the terms',
                                 })}
-                                className={styles.sign_up_checkbox}
+                                className={`${styles.sign_up_checkbox} ${(isError || errors.agreeToTerms) && styles.error_input}`}
                             />
                             I agree to the processing of my personal information
+                            {errors.agreeToTerms && (
+                                <div className={styles.error_message}>
+                                    {errors.agreeToTerms.message}
+                                </div>
+                            )}
                         </label>
-                        {errors.agreeToTerms && (
-                            <div>{errors.agreeToTerms.message}</div>
-                        )}
                         <button
                             disabled={isSubmitting}
                             type="submit"
@@ -158,13 +172,6 @@ export const SignUp = () => {
                             {isSubmitting ? 'Loading...' : 'Create'}
                         </button>
                     </fieldset>
-                    {isError && (
-                        <div>
-                            {error.data.errors.username ||
-                                error.data.errors.email ||
-                                'Registration failed. Please try again later.'}
-                        </div>
-                    )}
                     <div className={styles.sign_up_footer}>
                         Already have an account?{' '}
                         <Link to="/sign-up" className={styles.anchor_blue}>
@@ -176,6 +183,3 @@ export const SignUp = () => {
         </HeaderLayout>
     );
 };
-// email: "mashaserova@gmail.com"
-// token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGQyNDQ4Y2UxOGQwMWIwMDJiMjNkYiIsInVzZXJuYW1lIjoibWFzaGFzZXJvdmEiLCJleHAiOjE3MzQwOTg1MDQsImlhdCI6MTcyODkxNDUwNH0.pea6WChoF_HGYnaAqQ9ej1irwEC4PUVog0cAnLgmqRw"
-// username: "mashaserova"

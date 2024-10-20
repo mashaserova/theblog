@@ -32,9 +32,6 @@
     flex-direction: column;
     margin-bottom: 12px;
     gap: 2px;
-    &:last-of-type {
-        margin-bottom: 22px;
-    }
 }
 .sign_in_input {
     width: 314px;
@@ -45,7 +42,6 @@
     border-radius: 4px;
     padding-left: 12px;
     margin-top: 2px;
-    color: #bfbfbf;
 }
 .login_button {
     width: 314px;
@@ -67,4 +63,11 @@
 .anchor_blue {
     color: #1890ff;
     text-decoration: none;
+}
+.error_input {
+    border-color: #f5222d;
+}
+.error_message {
+    color: #f5222d;
+    font-size: 14px;
 }

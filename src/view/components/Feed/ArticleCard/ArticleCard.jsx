@@ -20,6 +20,8 @@ export const ArticleCard = ({ article, fullContent }) => {
     const [deleteArticle] = useDeleteArticleMutation();
     const [likeArticle] = useLikeArticleMutation();
     const [dislikeArticle] = useDislikeArticleMutation();
+    const { data } = useGetCurrentUserQuery(undefined, { skip: !token });
+    const isAuthor = data?.user?.username === article.author.username;
     const formattedDate = (dateStr) => {
         const date = new Date(dateStr);
         return format(date, 'LLLL dd, yyyy');
@@ -60,8 +62,6 @@ export const ArticleCard = ({ article, fullContent }) => {
             }
         }
     };
-    const { data } = useGetCurrentUserQuery(undefined, { skip: !token });
-    const isAuthor = data?.user?.username === article.author.username;
     return (
         <div className={styles.article_card}>
             <div className={styles.article_content}>

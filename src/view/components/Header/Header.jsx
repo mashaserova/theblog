@@ -53,11 +53,26 @@ export const Header = () => {
                         </button>
                     </Link>
                     <Link to={'/profile'}>
-                        <button className={styles.profile_button}>
-                            {isLoading
-                                ? 'Загрузка...'
-                                : data?.user?.username || 'Профиль'}
-                        </button>
+                        <div className={styles.header_buttons}>
+                            <button className={styles.profile_button}>
+                                {isLoading
+                                    ? 'Загрузка...'
+                                    : data?.user?.username || 'Профиль'}
+                            </button>
+                            {data?.user?.image ? (
+                                <img
+                                    className={styles.user_image}
+                                    src={data.user.image}
+                                    alt={data.user.username}
+                                />
+                            ) : (
+                                <img
+                                    className={styles.user_image}
+                                    src="https://static.productionready.io/images/smiley-cyrus.jpg"
+                                    alt="user without image"
+                                />
+                            )}
+                        </div>
                     </Link>
                     <Link to={'./'}>
                         <button

@@ -21,11 +21,18 @@
     background-color: #fff;
     border: none;
     cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 .sign_up_button {
     color: #52c41a;
     border: 1px solid #52c41a;
     border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 .create_article_button {
     font-size: 14px;
@@ -36,6 +43,9 @@
     width: 112px;
     height: 31px;
     cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 .profile_button {
     color: #000000D9;
@@ -43,6 +53,19 @@
     background-color: #fff;
     border: none;
     cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+.user_image {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 0px 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+    }
 }
 .log_out_button {
     width: 109px;
@@ -52,4 +75,7 @@
     border-radius: 5px;
     cursor: pointer;
     background-color: #fff;
+    &:hover {
+        text-decoration: underline;
+    }
 }

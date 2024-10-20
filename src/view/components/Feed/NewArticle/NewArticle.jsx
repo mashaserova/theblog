@@ -4,6 +4,7 @@ import styles from './NewArticle.module.scss';
 import { useForm } from 'react-hook-form';
 import { useCreateNewArticleMutation } from '../../../../store/articlesSlice';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 
 export const NewArticle = () => {
     const {
@@ -15,6 +16,7 @@ export const NewArticle = () => {
     const navigate = useNavigate();
     const [tags, setTags] = useState([]);
     const [createNewArticle] = useCreateNewArticleMutation();
+
     const onSubmit = async (data) => {
         try {
             await createNewArticle({
@@ -24,22 +26,35 @@ export const NewArticle = () => {
                 tagList: tags,
             }).unwrap();
             navigate('/');
+            message.success('The article is created successfully!');
         } catch (error) {
-            console.log('ошибка', error);
+            message.error(
+                'An error occurred while creating the article, please try again.'
+            );
         }
     };
+
     const handleAddTag = () => {
         const newTag = document.getElementById('tagInput').value.trim();
         if (newTag) {
-            setTags([...tags, newTag]);
+            setTags((prevTags) => [...prevTags, newTag]);
             setValue('tagInput', '');
             document.getElementById('tagInput').focus();
         }
     };
+
+    const handleEditTag = (index, newValue) => {
+        const updatedTags = tags.map((tag, i) =>
+            i === index ? newValue : tag
+        );
+        setTags(updatedTags);
+    };
+
     const handleDeleteTag = (index) => {
         const newTags = tags.filter((_, i) => i !== index);
         setTags(newTags);
     };
+
     return (
         <HeaderLayout>
             <form
@@ -53,39 +68,50 @@ export const NewArticle = () => {
                     <label className={styles.new_article_label}>
                         Title
                         <input
-                            className={styles.new_article_input}
+                            className={`${styles.new_article_input} ${errors.title && styles.error_input}`}
                             type="text"
                             placeholder="Title"
                             {...register('title', {
                                 required: 'Title is required',
                             })}
                         />
+                        {errors.title && (
+                            <div className={styles.error_message}>
+                                {errors.title.message}
+                            </div>
+                        )}
                     </label>
-                    {errors.title && errors.title.message}
                     <label className={styles.new_article_label}>
                         Short description
                         <input
-                            className={styles.new_article_input}
+                            className={`${styles.new_article_input} ${errors.description && styles.error_input}`}
                             type="text"
-                            placeholder="Title"
+                            placeholder="Short description"
                             {...register('description', {
                                 required: 'Short description is required',
                             })}
                         />
+                        {errors.description && (
+                            <div className={styles.error_message}>
+                                {errors.description.message}
+                            </div>
+                        )}
                     </label>
-                    {errors.description && errors.description.message}
                     <label className={styles.new_article_label}>
                         Text
                         <input
-                            className={styles.new_article_input}
-                            type="text"
+                            className={`${styles.new_article_input} ${errors.body && styles.error_input}`}
                             placeholder="Text"
                             {...register('body', {
                                 required: 'Text is required',
                             })}
                         />
+                        {errors.body && (
+                            <div className={styles.error_message}>
+                                {errors.body.message}
+                            </div>
+                        )}
                     </label>
-                    {errors.body && errors.body.message}
                     <label className={styles.new_article_label}>
                         Tags
                         <input
@@ -98,7 +124,16 @@ export const NewArticle = () => {
                         <div className={styles.tags_container}>
                             {tags.map((tag, index) => (
                                 <div key={index} className={styles.tag_item}>
-                                    {tag}
+                                    <input
+                                        className={styles.editable_tag_input}
+                                        value={tag}
+                                        onChange={(event) =>
+                                            handleEditTag(
+                                                index,
+                                                event.target.value
+                                            )
+                                        }
+                                    />
                                     <button
                                         className={styles.delete_tag_button}
                                         onClick={() => handleDeleteTag(index)}

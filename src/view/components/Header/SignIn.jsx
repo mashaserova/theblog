@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useLoginUserMutation } from '../../../store/loginSlice';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../../store/authSlice';
+import { message } from 'antd';
 
 export const SignIn = () => {
     const {
@@ -15,7 +16,7 @@ export const SignIn = () => {
     } = useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [loginUser, { isError, error }] = useLoginUserMutation();
+    const [loginUser, { isError }] = useLoginUserMutation();
     const onSubmit = async (data) => {
         try {
             const result = await loginUser({
@@ -25,13 +26,17 @@ export const SignIn = () => {
             dispatch(
                 loginSuccess({ token: result.user.token, user: result.user })
             );
+            message.success('You logged in successfully!');
             localStorage.setItem('token', result.user.token);
             localStorage.setItem('username', result.user.username);
             navigate('/');
-        } catch (err) {
-            console.error('Ошибка входа:', err);
+        } catch (error) {
+            message.error(
+                `Email or password ${error.data.errors['email or password']}.`
+            );
         }
     };
+
     return (
         <HeaderLayout>
             <div className={styles.sign_in_container}>
@@ -52,10 +57,14 @@ export const SignIn = () => {
                                         message: 'Invalid email address',
                                     },
                                 })}
-                                className={styles.sign_in_input}
+                                className={`${styles.sign_in_input} ${(isError || errors.email) && styles.error_input}`}
                             ></input>
+                            {errors.email && (
+                                <div className={styles.error_message}>
+                                    {errors.email.message}
+                                </div>
+                            )}
                         </label>
-                        {errors.email && <div>{errors.email.message}</div>}
                         <label className={styles.sign_in_label}>
                             Password
                             <input
@@ -64,23 +73,18 @@ export const SignIn = () => {
                                 {...register('password', {
                                     required: 'Password is required',
                                 })}
-                                className={styles.sign_in_input}
+                                className={`${styles.sign_in_input} ${(isError || errors.password) && styles.error_input}`}
                             ></input>
+                            {errors.password && (
+                                <div className={styles.error_message}>
+                                    {errors.password.message}
+                                </div>
+                            )}
                         </label>
-                        {errors.password && (
-                            <div>{errors.password.message}</div>
-                        )}
                         <button className={styles.login_button}>
                             {isSubmitting ? 'Loading...' : 'Login'}
                         </button>
                     </fieldset>
-                    {isError && (
-                        <div>
-                            {error.data.errors.username ||
-                                error.data.errors.email ||
-                                'Login failed. Please try again later.'}
-                        </div>
-                    )}
                     <div className={styles.sign_in_footer}>
                         Don’t have an account?{' '}
                         <Link to="/sign-up" className={styles.anchor_blue}>

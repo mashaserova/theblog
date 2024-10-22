@@ -43,6 +43,9 @@ export const articlesApi = createApi({
             }),
             invalidatesTags: ['Articles'],
         }),
+        getArticleBySlug: builder.query({
+            query: (slug) => `/articles/${slug}`,
+        }),
     }),
 });
 
@@ -51,4 +54,5 @@ export const {
     useCreateNewArticleMutation,
     useEditArticleMutation,
     useDeleteArticleMutation,
+    useGetArticleBySlugQuery,
 } = articlesApi;

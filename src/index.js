@@ -11,37 +11,43 @@ import { Article } from './view/components/Feed/Article/Article';
 import { NewArticle } from './view/components/Feed/NewArticle/NewArticle';
 import { Profile } from './view/components/Feed/Profile/Profile';
 import { Edit } from './view/components/Feed/Edit/Edit';
-
+import PrivateRoute from './view/components/PrivateRoute/PrivateRoute';
+import { ROUTES } from './constants/routes';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: ROUTES.HOME,
         element: <App />,
         errorElement: <div>404</div>,
     },
     {
-        path: '/sign-in',
+        path: ROUTES.SIGN_IN,
         element: <SignIn />,
     },
     {
-        path: '/sign-up',
+        path: ROUTES.SIGN_UP,
         element: <SignUp />,
     },
     {
-        path: '/article/:id',
+        path: ROUTES.ARTICLE,
         element: <Article />,
     },
     {
-        path: '/new-article',
-        element: <NewArticle />,
-    },
-    {
-        path: '/profile',
-        element: <Profile />,
-    },
-    {
-        path: '/article/:id/edit',
-        element: <Edit />,
+        element: <PrivateRoute />,
+        children: [
+            {
+                path: ROUTES.NEW_ARTICLE,
+                element: <NewArticle />,
+            },
+            {
+                path: ROUTES.PROFILE,
+                element: <Profile />,
+            },
+            {
+                path: ROUTES.EDIT_ARTICLE,
+                element: <Edit />,
+            },
+        ],
     },
 ]);
 

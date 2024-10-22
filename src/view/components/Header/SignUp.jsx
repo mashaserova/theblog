@@ -17,7 +17,7 @@ export const SignUp = () => {
     } = useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [registerUser, { isError }] = useRegisterUserMutation();
+    const [registerUser, { isError, error }] = useRegisterUserMutation();
     const onSubmit = async (data) => {
         try {
             const { password, repeatPassword, agreeToTerms, ...userData } =
@@ -81,6 +81,11 @@ export const SignUp = () => {
                                     {errors.username.message}
                                 </div>
                             )}
+                            {error?.data.errors.username && (
+                                <div className={styles.error_message}>
+                                    Username {error.data.errors.username}
+                                </div>
+                            )}
                         </label>
                         <label className={styles.sign_up_label}>
                             Email address
@@ -99,6 +104,11 @@ export const SignUp = () => {
                             {errors.email && (
                                 <div className={styles.error_message}>
                                     {errors.email.message}
+                                </div>
+                            )}
+                            {error?.data.errors.username && (
+                                <div className={styles.error_message}>
+                                    Email {error.data.errors.username}
                                 </div>
                             )}
                         </label>

@@ -11,6 +11,7 @@ import {
     useLikeArticleMutation,
 } from '../../../../store/likeSlice';
 import { Popconfirm, message } from 'antd';
+import MarkdownToJsx from 'markdown-to-jsx';
 
 export const ArticleCard = ({ article, fullContent }) => {
     const navigate = useNavigate();
@@ -22,6 +23,91 @@ export const ArticleCard = ({ article, fullContent }) => {
     const [dislikeArticle] = useDislikeArticleMutation();
     const { data } = useGetCurrentUserQuery(undefined, { skip: !token });
     const isAuthor = data?.user?.username === article.author.username;
+    const options = {
+        overrides: {
+            h1: {
+                component: 'h1',
+                props: {
+                    className: styles.markdown_h1,
+                },
+            },
+            h2: {
+                component: 'h2',
+                props: {
+                    className: styles.markdown_h2,
+                },
+            },
+            h3: {
+                component: 'h3',
+                props: {
+                    className: styles.markdown_h3,
+                },
+            },
+            p: {
+                component: 'p',
+                props: {
+                    className: styles.markdown_p,
+                },
+            },
+            a: {
+                component: 'a',
+                props: {
+                    className: styles.markdown_a,
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                },
+            },
+            img: {
+                component: 'img',
+                props: {
+                    className: styles.markdown_img,
+                    style: { maxWidth: '100%', height: 'auto' },
+                },
+            },
+            strong: {
+                component: 'strong',
+                props: {
+                    className: styles.markdown_strong,
+                },
+            },
+            ul: {
+                component: 'ul',
+                props: {
+                    className: styles.markdown_ul,
+                },
+            },
+            ol: {
+                component: 'ol',
+                props: {
+                    className: styles.markdown_ol,
+                },
+            },
+            li: {
+                component: 'li',
+                props: {
+                    className: styles.markdown_li,
+                },
+            },
+            blockquote: {
+                component: 'blockquote',
+                props: {
+                    className: styles.markdown_blockquote,
+                },
+            },
+            code: {
+                component: 'code',
+                props: {
+                    className: styles.markdown_code,
+                },
+            },
+            pre: {
+                component: 'pre',
+                props: {
+                    className: styles.markdown_pre,
+                },
+            },
+        },
+    };
     const formattedDate = (dateStr) => {
         const date = new Date(dateStr);
         return format(date, 'LLLL dd, yyyy');
@@ -92,7 +178,11 @@ export const ArticleCard = ({ article, fullContent }) => {
                     {article.description}
                 </p>
                 {fullContent && (
-                    <p className={styles.article_body}>{article.body}</p>
+                    <div className={styles.article_body}>
+                        <MarkdownToJsx options={options}>
+                            {article.body}
+                        </MarkdownToJsx>
+                    </div>
                 )}
             </div>
             <div className={styles.article_info}>
